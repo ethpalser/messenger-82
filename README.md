@@ -71,3 +71,6 @@ https://www.postgresql.org/
 
 ### Sequelize
 https://sequelize.org/
+
+### Socket.IO
+https://socket.io/docs/v4
