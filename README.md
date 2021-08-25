@@ -52,3 +52,22 @@ In a separate terminal, start the back end:
 cd server
 npm run dev
 ```
+
+## Development Stack
+
+This app is built using React and Material UI on the front end, Node.js on the back end with PostgreSQL and Sequelize, and Socket.io is used for real time communication.
+
+### React
+https://reactjs.org/docs/getting-started.html
+
+### Material UI
+https://material-ui.com/
+
+### Node.js
+https://nodejs.org/
+
+### PostgreSQL
+https://www.postgresql.org/
+
+### Sequelize
+https://sequelize.org/
