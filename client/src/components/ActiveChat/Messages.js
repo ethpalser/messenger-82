@@ -5,9 +5,6 @@ import moment from "moment";
 
 const Messages = (props) => {
   const { messages, otherUser, userId, lastReadMessage } = props;
-  messages.sort((a, b) => {
-    return moment(a.createdAt).diff(b.createdAt);
-  });
 
   return (
     <Box>
