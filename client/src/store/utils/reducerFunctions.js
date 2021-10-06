@@ -19,7 +19,7 @@ export const addMessageToStore = (state, payload) => {
         convoCopy.messages.push(message);
         convoCopy.unreadMessages = convoCopy.messages
             .filter( message => message.read === false && message.senderId === convoCopy.otherUser.id ).length;
-        convoCopy.latestMessageText = message.Text;
+        convoCopy.latestMessageText = message.text;
         // used to determine where a user's profile image should be placed for conversation
         const readMessages = convoCopy.messages
             .filter( message => message.read === true && message.senderId !== convoCopy.otherUser.id );
@@ -83,6 +83,7 @@ export const addNewConvoToStore = (state, recipientId, message) => {
       convoCopy.messages.push(message);
       convoCopy.unreadMessages = message.senderId === convoCopy.otherUser.id ? 1 : 0;
       convoCopy.latestMessageText = message.text;
+      convoCopy.lastReadMessage = -1;
       return convoCopy;
     } else {
       return convo;
