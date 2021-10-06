@@ -79,13 +79,6 @@ export const fetchConversations = () => async (dispatch) => {
   }
 };
 
-// DEPRECIATED
-// Due to async functionality causing dependent information not being utilized when necessary
-const saveMessage = async (body) => {
-  const { data } = await axios.post("/api/messages", body);
-  return data;
-};
-
 const sendMessage = (data, body) => {
   socket.emit("new-message", {
     message: data.message,
@@ -93,7 +86,6 @@ const sendMessage = (data, body) => {
     sender: data.sender,
   });
 };
-// END DEPRECIATED
 
 // message format to send: {recipientId, text, conversationId}
 // conversationId will be set to null if its a brand new conversation
@@ -113,10 +105,10 @@ export const postMessage = (body) => async (dispatch) => {
   }
 };
 
-export const updateReadMessages = (body) => async (dispatch) => {
+export const readMessages = (body) => async (dispatch) => {
     try {
         const { data } = await axios.post("/api/messages/read", body);
-        dispatch(readActiveChat( body.conversationId, data.conversation ));
+        dispatch(readActiveChat( data.convoFragment ));
     }
     catch (error) {
         console.error(error);

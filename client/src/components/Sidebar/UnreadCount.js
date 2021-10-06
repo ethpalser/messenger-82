@@ -23,7 +23,7 @@ const UnreadCount = (props) => {
 
     return (
         <div className={ classes.root }>
-            { conversation.unreadMessages === 0 ? <div/> :
+            { conversation.unreadMessages !== 0 &&
             <Typography align="center" className={ classes.notification }> { conversation.unreadMessages } </Typography> }
         </div>
     );

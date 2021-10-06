@@ -43,7 +43,7 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// expects { otherUserId, conversationId } in body (neither should be null)
+// expects { conversationId, otherUserId } in body (neither should be null)
 router.post("/read", async (req, res, next) => {
     try{
         if (!req.user ){
@@ -68,13 +68,13 @@ router.post("/read", async (req, res, next) => {
                 }
             });
 
-        // get the updated conversation to return
-        const conversation = await Conversation.findOne({
+        // get the updated conversation to return, containing only the messages and conversations table info
+        const convoFragment = await Conversation.findOne({
             where: { id: conversationId },
             include: [{ model: Message, order: ["createdAt", "DESC"] }, ],
         });
-        // return the updated conversation
-        res.json({ conversation });
+        // return the updated conversation and the user who made the update
+        res.json({ userId, convoFragment });
     }
     catch (error) {
         next (error);

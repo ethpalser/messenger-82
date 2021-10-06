@@ -69,10 +69,11 @@ export const addConversation = (recipientId, newMessage) => {
   };
 };
 
-export const readActiveChat = (conversationId, conversation) => {
+// convoFragment contains conversationId and messages, but it lacks sender and otherUser info
+export const readActiveChat = ( convoFragment ) => {
     return {
         type: READ_ACTIVE_CHAT,
-        payload: { conversationId, conversation }
+        payload: { convoFragment }
     };
 }
 
@@ -103,8 +104,7 @@ const reducer = (state = [], action) => {
     case READ_ACTIVE_CHAT: {
         return updateReadMessages(
             state,
-            action.payload.conversationId,
-            action.payload.conversation
+            action.payload.convoFragment
         );
     }
     default:

@@ -9,6 +9,7 @@ export const addMessageToStore = (state, payload) => {
     };
     newConvo.unreadMessages = message.senderId === newConvo.otherUser.id ? 1 : 0;
     newConvo.latestMessageText = message.text;
+    newConvo.lastReadMessage = -1;
     return [newConvo, ...state];
   }
 
@@ -19,6 +20,10 @@ export const addMessageToStore = (state, payload) => {
         convoCopy.unreadMessages = convoCopy.messages
             .filter( message => message.read === false && message.senderId === convoCopy.otherUser.id ).length;
         convoCopy.latestMessageText = message.Text;
+        // used to determine where a user's profile image should be placed for conversation
+        const readMessages = convoCopy.messages
+            .filter( message => message.read === true && message.senderId !== convoCopy.otherUser.id );
+        convoCopy.lastReadMessage = readMessages.length === 0 ? -1 : readMessages[readMessages.length-1].id;
       return convoCopy;
     } else {
       return convo;
@@ -84,13 +89,17 @@ export const addNewConvoToStore = (state, recipientId, message) => {
   });
 };
 
-export const updateReadMessages = (state, conversationId, conversation ) => {
+export const updateReadMessages = (state, convoFragment ) => {
     return state.map((convo) => {
-        if (convo.id === conversationId) {
+        if (convo.id === convoFragment.id) {
             const convoCopy = { ...convo };
-            convoCopy.messages = conversation.messages;
-            convoCopy.unreadMessages = conversation.messages
-                .filter( message => message.read === false && message.senderId === conversation.otherUser.id ).length;
+            convoCopy.messages = convoFragment.messages;
+            convoCopy.unreadMessages = convoCopy.messages
+                .filter( message => message.read === false && message.senderId === convoCopy.otherUser.id ).length;
+            // used to determine where a user's profile image should be placed for conversation
+            const readMessages = convoCopy.messages
+                .filter( message => message.read === true && message.senderId !== convoCopy.otherUser.id );
+            convoCopy.lastReadMessage = readMessages.length === 0 ? -1 : readMessages[readMessages.length-1].id;
           return convoCopy;
         } else {
           return convo;
