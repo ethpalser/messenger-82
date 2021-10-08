@@ -40,9 +40,9 @@ const Input = (props) => {
       conversationId,
       sender: conversationId ? null : user
     };
+    await props.postMessage(reqBody);
     // Update the conversation that everything before from the other user has been read
     await props.readMessages(readBody);
-    await props.postMessage(reqBody);
     setText("");
   };
 

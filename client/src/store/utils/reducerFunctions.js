@@ -20,10 +20,6 @@ export const addMessageToStore = (state, payload) => {
         convoCopy.unreadMessages = convoCopy.messages
             .filter( message => message.read === false && message.senderId === convoCopy.otherUser.id ).length;
         convoCopy.latestMessageText = message.text;
-        // used to determine where a user's profile image should be placed for conversation
-        const readMessages = convoCopy.messages
-            .filter( message => message.read === true && message.senderId !== convoCopy.otherUser.id );
-        convoCopy.lastReadMessage = readMessages.length === 0 ? -1 : readMessages[readMessages.length-1].id;
       return convoCopy;
     } else {
       return convo;
@@ -91,15 +87,15 @@ export const addNewConvoToStore = (state, recipientId, message) => {
   });
 };
 
-export const updateReadMessages = (state, convoFragment ) => {
+export const updateReadMessages = (state, conversationId, messages ) => {
     return state.map((convo) => {
-        if (convo.id === convoFragment.id) {
+        if (convo.id === conversationId) {
             const convoCopy = { ...convo };
-            convoCopy.messages = convoFragment.messages;
-            convoCopy.unreadMessages = convoCopy.messages
+            convoCopy.messages = messages;
+            convoCopy.unreadMessages = messages
                 .filter( message => message.read === false && message.senderId === convoCopy.otherUser.id ).length;
             // used to determine where a user's profile image should be placed for conversation
-            const readMessages = convoCopy.messages
+            const readMessages = messages
                 .filter( message => message.read === true && message.senderId !== convoCopy.otherUser.id );
             convoCopy.lastReadMessage = readMessages.length === 0 ? -1 : readMessages[readMessages.length-1].id;
           return convoCopy;

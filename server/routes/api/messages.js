@@ -71,10 +71,11 @@ router.post("/read", async (req, res, next) => {
         // get the updated conversation to return, containing only the messages and conversations table info
         const convoFragment = await Conversation.findOne({
             where: { id: conversationId },
+            order: [[Message, "createdAt", "ASC"]],
             include: [{ model: Message, order: ["createdAt", "DESC"] }, ],
         });
         // return the updated conversation and the user who made the update
-        res.json({ userId, convoFragment });
+        res.json({ conversationId: convoFragment.id, messages: convoFragment.messages });
     }
     catch (error) {
         next (error);
