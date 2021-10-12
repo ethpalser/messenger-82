@@ -69,10 +69,10 @@ export const addConversation = (recipientId, newMessage) => {
   };
 };
 
-export const readActiveChat = (conversationId, conversation) => {
+export const readActiveChat = ( conversationId, messages ) => {
     return {
         type: READ_ACTIVE_CHAT,
-        payload: { conversationId, conversation }
+        payload: { conversationId, messages }
     };
 }
 
@@ -104,7 +104,7 @@ const reducer = (state = [], action) => {
         return updateReadMessages(
             state,
             action.payload.conversationId,
-            action.payload.conversation
+            action.payload.messages
         );
     }
     default:
