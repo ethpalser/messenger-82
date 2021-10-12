@@ -107,9 +107,9 @@ export const postMessage = (body) => async (dispatch) => {
 
 export const readMessages = (body) => async (dispatch) => {
     try {
-        const { data } = await axios.post("/api/messages/read", body);
+        console.log("convo id: " + body.conversationId);
+        const { data } = await axios.put("/api/messages/read", body);
         dispatch(readActiveChat( data.conversationId, data.messages ));
-        // despite being listened for in socket.js this is not getting emitted to other users
         socket.emit("read-messages", {
             conversationId: data.conversationId,
             messages: data.messages,

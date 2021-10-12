@@ -44,7 +44,7 @@ router.post("/", async (req, res, next) => {
 });
 
 // expects { conversationId, otherUserId } in body (neither should be null)
-router.post("/read", async (req, res, next) => {
+router.put("/read", async (req, res, next) => {
     try{
         if (!req.user ){
             return res.sendStatus(401);
@@ -55,18 +55,23 @@ router.post("/read", async (req, res, next) => {
         const userId = req.user.id;
         const { conversationId, otherUserId } = req.body;
 
+        const convoToUpdate = await Conversation.findConversation(userId, otherUserId);
+        if(!convoToUpdate || convoToUpdate.id != conversationId){
+            return res.sendStatus(403);
+        }
+
         // update messages for the other user in the conversation as read
-        const numUpdates = await Message.update(
-            {
-                read: true
-            },
-            {
-                where: {
-                    read: false,
-                    senderId: otherUserId,
-                    conversationId: conversationId
-                }
-            });
+        await Message.update(
+        {
+            read: true
+        },
+        {
+            where: {
+                read: false,
+                senderId: otherUserId,
+                conversationId: conversationId
+            }
+        });
 
         // get the updated conversation to return, containing only the messages and conversations table info
         const convoFragment = await Conversation.findOne({
